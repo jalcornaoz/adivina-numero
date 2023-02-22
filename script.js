@@ -6,6 +6,7 @@ const guessField = document.querySelector(".guess");
 const highscoreField = document.querySelector(".highscore");
 const messageField = document.querySelector(".message");
 const numberField = document.querySelector(".number");
+const bodyField = document.querySelector("body");
 
 /*
 console.log(
@@ -20,15 +21,14 @@ console.log(
 */
 
 //2o paso: crear las variables que necesitamos
-let score = 20;
-let highscore = 0;
-const secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
-console.log(`El numero secreto es: ${secretNumber}`);
+let highscore;
+let score;
+let secretNumber;
+fnInitApp();
 
 //3er paso: crear las funciones
 
 checkButton.addEventListener("click", fnCheckButton);
-againButton.addEventListener("click", fnReset);
 
 function fnCheckButton() {
   const number = Number(guessField.value);
@@ -37,8 +37,13 @@ function fnCheckButton() {
     numberField.textContent = secretNumber;
     if (score > highscore) {
       highscore = score;
+      localStorage.setItem("highscore", highscore);
       highscoreField.textContent = highscore;
+      bodyField.style.backgroundColor = "#00cc00";
     }
+  } else if (score === 1) {
+    bodyField.style.backgroundColor = "#cc0000";
+    scoreField.textContent = 0;
   } else {
     const mensaje =
       secretNumber > number
@@ -53,11 +58,19 @@ function fnCheckButton() {
 function mostrarMensaje(msj) {
   messageField.textContent = msj;
 }
-function fnReset() {
-  score = 20;
-  scoreField.textContent = score;
-  mostrarMensaje("Start guessing...");
+
+// 4o paso: añadir un listener al againButton
+againButton.addEventListener("click", fnInitApp);
+
+function fnInitApp() {
+  if (localStorage.getItem("highscore"))
+    highscore = localStorage.getItem("highscore");
+  else highscore = 0;
+  bodyField.style.backgroundColor = "#222";
+  scoreField.textContent = score = 20;
+  secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
+  console.log(`El numero secreto es: ${secretNumber}`);
+  mostrarMensaje("Empieza a adivinar...");
   guessField.value = "";
   numberField.textContent = "?";
-  secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
 }

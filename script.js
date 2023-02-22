@@ -20,32 +20,44 @@ console.log(
 */
 
 //2o paso: crear las variables que necesitamos
-const score = 20;
-const highscore = 0;
+let score = 20;
+let highscore = 0;
 const secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
-const number = guessField.value;
-
-/*
 console.log(`El numero secreto es: ${secretNumber}`);
-console.log(`El número elegido es: ${number}`);
-*/
 
 //3er paso: crear las funciones
 
-function compara(secretNumber, number) {
-  if (secretNumber < guessInput) {
-    messageField.textContent = "El número secreto es menor.";
-  } else if (secretNumber > guessInput) {
-    messageField.textContent = "El número secreto es mayor.";
-  } else if (secretNumber == guessInput) {
-    messageField.textContent = "Has acertado el número.";
+checkButton.addEventListener("click", fnCheckButton);
+againButton.addEventListener("click", fnReset);
+
+function fnCheckButton() {
+  const number = Number(guessField.value);
+  if (secretNumber === number) {
+    mostrarMensaje("¡¡Has acertado el número.!!");
+    numberField.textContent = secretNumber;
+    if (score > highscore) {
+      highscore = score;
+      highscoreField.textContent = highscore;
+    }
+  } else {
+    const mensaje =
+      secretNumber > number
+        ? "El número secreto es mayor."
+        : "El número secreto es menor.";
+    mostrarMensaje(mensaje);
+    score--;
+    scoreField.textContent = score;
   }
 }
 
-checkButton.addEventListener("click", compara(secretNumber, number));
-
-//scoreField.textContent = 10;
-
-//document.addEventListener("click", function () {
-//  alert("Hola mundo");
-//});
+function mostrarMensaje(msj) {
+  messageField.textContent = msj;
+}
+function fnReset() {
+  score = 20;
+  scoreField.textContent = score;
+  mostrarMensaje("Start guessing...");
+  guessField.value = "";
+  numberField.textContent = "?";
+  secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
+}

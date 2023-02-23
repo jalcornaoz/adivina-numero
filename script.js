@@ -24,10 +24,10 @@ console.log(
 let highscore;
 let score;
 let secretNumber;
-fnInitApp();
+
+fnInitApp(); //inicializamos variables
 
 //3er paso: crear las funciones
-
 checkButton.addEventListener("click", fnCheckButton);
 
 function fnCheckButton() {
@@ -36,9 +36,8 @@ function fnCheckButton() {
     mostrarMensaje("¡¡Has acertado el número.!!");
     numberField.textContent = secretNumber;
     if (score > highscore) {
-      highscore = score;
-      localStorage.setItem("highscore", highscore);
-      highscoreField.textContent = highscore;
+      highscoreField.textContent = highscore = score;
+      localStorage.setItem("highscore", score);
       bodyField.style.backgroundColor = "#00cc00";
     }
   } else if (score === 1) {
@@ -47,8 +46,8 @@ function fnCheckButton() {
   } else {
     const mensaje =
       secretNumber > number
-        ? "El número secreto es mayor."
-        : "El número secreto es menor.";
+        ? "El número secreto es MAYOR."
+        : "El número secreto es MENOR.";
     mostrarMensaje(mensaje);
     score--;
     scoreField.textContent = score;
@@ -63,14 +62,17 @@ function mostrarMensaje(msj) {
 againButton.addEventListener("click", fnInitApp);
 
 function fnInitApp() {
-  if (localStorage.getItem("highscore"))
-    highscore = localStorage.getItem("highscore");
-  else highscore = 0;
-  bodyField.style.backgroundColor = "#222";
   scoreField.textContent = score = 20;
+  guessField.value = "";
+
+  if (localStorage.getItem("highscore"))
+    highscore = Number(localStorage.getItem("highscore"));
+  else highscore = 0;
+  highscoreField.textContent = highscore;
+
+  bodyField.style.backgroundColor = "#222";
   secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
   console.log(`El numero secreto es: ${secretNumber}`);
   mostrarMensaje("Empieza a adivinar...");
-  guessField.value = "";
   numberField.textContent = "?";
 }

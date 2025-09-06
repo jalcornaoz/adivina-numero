@@ -8,7 +8,7 @@ const messageField = document.querySelector(".message");
 const numberField = document.querySelector(".number");
 const bodyField = document.querySelector("body");
 
-/*
+// Comprobamos que hemos seleccionado bien los elementos
 console.log(
   scoreField,
   checkButton,
@@ -18,7 +18,6 @@ console.log(
   messageField,
   numberField
 );
-*/
 
 //2o paso: crear las variables que necesitamos
 let highscore;
@@ -27,8 +26,26 @@ let secretNumber;
 
 fnInitApp(); //inicializamos variables
 
-//3er paso: crear las funciones
+//3er paso: crear listeners para los botones
+againButton.addEventListener("click", fnInitApp);
 checkButton.addEventListener("click", fnCheckButton);
+
+// 4o paso: crear las funciones que necesitamos
+function fnInitApp() {
+  scoreField.textContent = score = 20;
+  guessField.value = "";
+
+  if (localStorage.getItem("highscore"))
+    highscore = Number(localStorage.getItem("highscore"));
+  else highscore = 0;
+  highscoreField.textContent = highscore;
+
+  bodyField.style.backgroundColor = "#222";
+  secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
+  console.log(`El numero secreto es: ${secretNumber}`);
+  mostrarMensaje("Empieza a adivinar...");
+  numberField.textContent = "?";
+}
 
 function fnCheckButton() {
   const number = Number(guessField.value);
@@ -56,23 +73,4 @@ function fnCheckButton() {
 
 function mostrarMensaje(msj) {
   messageField.textContent = msj;
-}
-
-// 4o paso: añadir un listener al againButton
-againButton.addEventListener("click", fnInitApp);
-
-function fnInitApp() {
-  scoreField.textContent = score = 20;
-  guessField.value = "";
-
-  if (localStorage.getItem("highscore"))
-    highscore = Number(localStorage.getItem("highscore"));
-  else highscore = 0;
-  highscoreField.textContent = highscore;
-
-  bodyField.style.backgroundColor = "#222";
-  secretNumber = Math.trunc(Math.random() * 20) + 1; // número aleatorio entre 1 y 20
-  console.log(`El numero secreto es: ${secretNumber}`);
-  mostrarMensaje("Empieza a adivinar...");
-  numberField.textContent = "?";
 }
